@@ -14,16 +14,8 @@ type Indicator = {
   valor: number;
 };
 
-type DailyData = {
-  dolar: Indicator;
-  euro: Indicator;
-  bitcoin: Indicator;
-  uf: Indicator;
-  utm: Indicator;
-};
-
 interface GlobalContextProps {
-  dailyData: DailyData | null;
+  dailyData: Indicator[] | null;
   indicatorData: SerieItem[] | null;
   fetchDataByIndicator: (economicIndicator: string) => Promise<void>;
   isLoading: boolean;
@@ -39,7 +31,7 @@ export const useGlobalContext = () => {
 };
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-  const [dailyData, setDailyData] = useState<DailyData | null>(null);
+  const [dailyData, setDailyData] = useState<Indicator[] | null>(null);
   const [indicatorData, setIndicatorData] = useState<SerieItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,15 +67,11 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         }
         const result = await response.json();
 
-        // Filtrar solo los indicadores relevantes
-        const filteredData: DailyData = {
-          dolar: result.dolar,
-          euro: result.euro,
-          bitcoin: result.bitcoin,
-          uf: result.uf,
-          utm: result.utm,
-        };
-        setDailyData(filteredData);
+        // Transformar el objeto en un array de indicadores
+        const filteredIndicators = ["dolar", "euro", "bitcoin", "uf", "utm"];
+        const transformedData: Indicator[] = filteredIndicators.map((key) => result[key]);
+        console.log(transformedData)
+        setDailyData(transformedData);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);

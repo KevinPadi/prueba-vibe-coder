@@ -6,6 +6,8 @@ import EconomicChart from "./economic-chart"
 export function DashboardPage() {
   const { dailyData, isLoading, error } = useGlobalContext()
 
+  console.log(dailyData)
+
   const getIndicatorCards = () => {
     if (!dailyData) return []
 
@@ -61,8 +63,8 @@ export function DashboardPage() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {getIndicatorCards().map((indicator) => (
-              <IndicatorCard key={indicator.code} indicator={indicator} />
+            {dailyData?.map((indicator) => (
+              <IndicatorCard key={indicator.codigo} indicator={indicator} />
             ))}
           </div>
         )}
