@@ -8,26 +8,6 @@ export function DashboardPage() {
 
   console.log(dailyData)
 
-  const getIndicatorCards = () => {
-    if (!dailyData) return []
-
-    const indicators = [
-      { code: "dolar", title: "Dólar Observado", color: "emerald", description: "CLP" },
-      { code: "bitcoin", title: "Bitcoin", color: "amber", description: "USD" },
-      { code: "euro", title: "Euro", color: "sky", description: "CLP" },
-      { code: "uf", title: "UF", color: "rose", description: "CLP" },
-      { code: "utm", title: "UTM", color: "purple", description: "CLP" },
-    ]
-
-    return indicators.map(({ code, title, color, description }) => ({
-      code,
-      title,
-      color,
-      description,
-      value: `$${Number(dailyData[code]?.valor).toLocaleString("es-CL")}`,
-    }))
-  }
-
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
