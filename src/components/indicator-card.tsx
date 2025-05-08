@@ -14,7 +14,6 @@ interface IndicatorProps {
 
 export function IndicatorCard({ indicator }: IndicatorProps) {
   const { title, value, description, color } = indicator
-  console.log(indicator)
 
   const getColorClass = () => {
     switch (color) {
