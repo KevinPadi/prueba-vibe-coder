@@ -1,9 +1,14 @@
 import { createContext, useState, useEffect, useContext } from "react"
 import type { ReactNode } from "react"
 
+type SerieItem = {
+  fecha: string;
+  valor: number;
+}
+
 interface GlobalContextProps {
-  dailyData: any;
-  indicatorData: any;
+  dailyData: Record<string, { [key: string]: string | number | boolean }> | null;
+  indicatorData: SerieItem[] | null;
   fetchDataByIndicator: (economicIndicator: string) => Promise<void>
   isLoading: boolean;
   error: string | null;
@@ -19,7 +24,7 @@ export const useGlobalContext = () => {
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [dailyData, setDailyData] = useState(null);
-  const [indicatorData, setIndicatorData] = useState(null);
+  const [indicatorData, setIndicatorData] = useState<SerieItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,10 +36,13 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         throw new Error("Error al obtener los datos de la API");
       }
       const result = await response.json();
-      console.log(result.serie)
       setIndicatorData(result.serie);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -51,8 +59,12 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         }
         const result = await response.json();
         setDailyData(result);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setIsLoading(false);
       }

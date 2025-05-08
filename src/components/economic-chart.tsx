@@ -32,13 +32,18 @@ const chartConfig = {
 export default function EconomicChart() {
   const { fetchDataByIndicator, indicatorData } = useGlobalContext()
 
-  const data = indicatorData?.map(item => ({
+    interface ChartData {
+    fecha: string;
+    valor: number;
+  }
+
+  const data: ChartData[] | undefined = indicatorData?.map((item) => ({
     fecha: new Date(item.fecha).toLocaleDateString('es-CL', {
       day: 'numeric',
       month: 'long',
     }),
     valor: item.valor,
-  }))
+  }));
   
   const handleFetchData = (indicator:string) => {
     fetchDataByIndicator(indicator)

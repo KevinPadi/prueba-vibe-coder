@@ -20,9 +20,6 @@ interface Indicator {
 }
 
 interface ApiResponse {
-  version: string
-  autor: string
-  fecha: string
   uf: Indicator
   ivp: Indicator
   dolar: Indicator
@@ -35,7 +32,7 @@ interface ApiResponse {
   libra_cobre: Indicator
   tasa_desempleo: Indicator
   bitcoin: Indicator
-  [key: string]: any
+  [key: string]: Indicator
 }
 
 export function DashboardPage() {
@@ -129,16 +126,16 @@ export function DashboardPage() {
     return `${change > 0 ? "+" : ""}${change.toFixed(2)}%`
   }
 
-  const calculateTrend = (indicator: Indicator) => {
-    if (!indicator.serie || indicator.serie.length < 2) return "neutral"
-
-    const currentValue = indicator.valor
-    const previousValue = indicator.serie[1]?.valor || 0
-
-    if (currentValue > previousValue) return "up"
-    if (currentValue < previousValue) return "down"
-    return "neutral"
-  }
+  const calculateTrend = (indicator: Indicator): "up" | "down" | "neutral" => {
+      if (!indicator.serie || indicator.serie.length < 2) return "neutral"
+  
+      const currentValue = indicator.valor
+      const previousValue = indicator.serie[1]?.valor || 0
+  
+      if (currentValue > previousValue) return "up"
+      if (currentValue < previousValue) return "down"
+      return "neutral"
+    }
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -176,11 +173,11 @@ export function DashboardPage() {
             </button>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {getIndicatorCards().map((indicator) => (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {getIndicatorCards().map(({ ...indicator }) => (
               <IndicatorCard key={indicator.code} indicator={indicator} />
             ))}
-          </div>
+            </div>
         )}
 
         <div className="grid gap-4">
