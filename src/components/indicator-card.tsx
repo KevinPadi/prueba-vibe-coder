@@ -7,8 +7,6 @@ interface IndicatorProps {
     code: string
     title: string
     value: string
-    change: string
-    trend: "up" | "down" | "neutral"
     description: string
     color: string
   }
@@ -16,6 +14,7 @@ interface IndicatorProps {
 
 export function IndicatorCard({ indicator }: IndicatorProps) {
   const { title, value, description, color } = indicator
+  console.log(indicator)
 
   const getColorClass = () => {
     switch (color) {
