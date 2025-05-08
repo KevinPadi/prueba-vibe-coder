@@ -51,7 +51,7 @@ export default function EconomicChart() {
 
   return (
     <Card>  
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-col sm:flex-row gap-2 sm:items-center justify-between">
         <div className="flex flex-col justify-between">
           <CardTitle>Tendencias de Indicadores</CardTitle>
           <CardDescription>
@@ -87,7 +87,7 @@ export default function EconomicChart() {
         </Select>
       </CardHeader>
       <CardContent className="p-0">
-      <ChartContainer config={chartConfig} className="h-96 w-full">
+      <ChartContainer config={chartConfig} className="max-h-96 w-full">
           <AreaChart
             accessibilityLayer
             data={data && data}
